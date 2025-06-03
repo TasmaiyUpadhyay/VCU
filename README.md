@@ -1,4 +1,4 @@
-[x] Create required folders and files
+-[x] Create required folders and files
 []  ADC drivers
 []  I2C driver
 []  CAN drivers
