@@ -1,6 +1,6 @@
--[x] Create required folders and files
-[]  ADC drivers
-[]  I2C driver
-[]  CAN drivers
-[]  Debug functions
-[]  Sensor specific functions
+- [x] Create required folders and files  
+- [ ] ADC drivers  
+- [ ] I2C driver  
+- [ ] CAN drivers  
+- [ ] Debug functions  
+- [ ] Sensor specific functions
