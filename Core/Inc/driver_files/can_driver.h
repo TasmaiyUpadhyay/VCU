@@ -9,5 +9,4 @@
 #define INC_CAN_DRIVER_H_
 
 
-
 #endif /* INC_CAN_DRIVER_H_ */
