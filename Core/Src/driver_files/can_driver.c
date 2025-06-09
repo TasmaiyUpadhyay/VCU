@@ -19,7 +19,9 @@ extern UART_HandleTypeDef huart1;
 #define MC_READ 0x3D
 #define MC_RX_ADDR 0x201
 #define MC_TX_ADDR 0x181
-
+#define TEMP_MONITOR 0X4A
+#define POSITION_ACTUAL 0X6E
+#define CURRENT_DEVICE_LOAD 0xC6
 
 char* txFailure = "No data sent through can!\r\n";
 char* rxFailure = "NO data received through can!\r\n";
@@ -54,6 +56,11 @@ void CAN_SendMessage(uint16_t id, uint8_t *data, uint8_t DLC) {
     				HAL_UART_Transmit(&huart1, txFailure,strlen(txFailure),HAL_MAX_DELAY);
     		}
 
+}
+
+void CAN_RequestData(uint16_t regID){
+	uint8_t requestData[3]={MC_READ,regID,0x00};
+	CAN_SendMessage(MC_RX_ADDR,requestData,3);
 }
 
 void Startup(){
@@ -136,4 +143,99 @@ void CANProcessIncomingMessage(FDCAN_RxHeaderTypeDef * header, uint8_t *data){
 void PingPongRec(){
 	uint8_t data[3]=0x54;
 	CAN_SendMessage(0x102,data,2);
+}
+
+
+void APPS_and_BP(uint8_t *Rxdata0){
+
+	if(RxData0==NULL){
+		error();
+	}
+	else{
+		uint16_t APPS1=(RxData0[0]<<8)|RxData0[1];
+		uint16_t APPS2=(RxData0[2]<<8)|RxData0[3];
+		uint16_t BP=(RxData0[4]<<8)|RxData0[5];
+	}
+}
+
+void LV_and_coolant(uint8_t *RxData1){
+	if(RxData1==NULL){
+		error();
+	}
+	else{
+		uint16_t LVI=(RxData1[0]<<8)|RxData1[1];
+		uint16_t LVV=(RxData1[2]<<8)|RxData1[3];
+		uint16_t cool1=(RxData1[4]<<8)|RxData1[5];
+		uint16_t cool2=(RxData1[6]<<8)|RxData1[7];
+
+	}
+}
+void Wheel_and_DampPOTs(uint8_t *RxData1){
+	if(RxData1==NULL){
+		error();
+	}
+	else{
+		uint16_t Wheel1=(RxData1[0]<<8)|RxData1[1];
+		uint16_t Wheel2=(RxData1[2]<<8)|RxData1[3];
+		uint16_t DampPOTs1=(RxData1[4]<<8)|RxData1[5];
+		uint16_t DampPOTs2=(RxData1[6]<<8)|RxData1[7];
+
+	}
+}
+void IMU(uint8_t *RxData1){
+	if(RxData1==NULL){
+		error();
+	}
+	else{
+		uint16_t roll=(RxData1[0]<<8)|RxData1[1];
+		uint16_t yaw=(RxData1[2]<<8)|RxData1[3];
+		uint16_t pitch=(RxData1[4]<<8)|RxData1[5];
+
+	}
+}
+void IMU_coords(uint8_t *RxData1){
+	if(RxData1==NULL){
+		error();
+	}
+	else{
+		uint16_t xcoord=(RxData1[0]<<8)|RxData1[1];
+		uint16_t ycoord=(RxData1[2]<<8)|RxData1[3];
+		uint16_t zcoord=(RxData1[4]<<8)|RxData1[5];
+
+	}
+}
+void MCprocess(uint8_t *RxData0){
+	if(RxData0==NULL){
+		error();
+		return;
+	}
+	else{
+		uint8_t regID=RxData0[0];
+		switch(regID){
+		case SPEED_ACTUAL:{
+			uint16_t speed=(RxData0[1]<<8)|RxData0[2];
+			break;
+		}
+		case SPEED_RPMMAX_INT:{
+			uint16_t rpm=(RxData0[1]<<8)|RxData0[2];
+			break;
+		}
+		case TORQUE_COMMAND:{
+			uint16_t torque=(RxData0[1]<<8)|RxData0[2];
+			break;
+		}
+		case CURRENT_DEVICE_LOAD:{
+				uint16_t CDL=(RxData0[1]<<8)|RxData0[2];
+				break;
+		}
+		case POSITION_ACTUAL:{
+				uint16_t posactual=(RxData0[1]<<8)|RxData0[2];
+				break;
+		}
+		}
+	}
+}
+
+void error(){
+
 }
