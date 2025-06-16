@@ -76,3 +76,6 @@
 #define ERROR_UART_SPI_FAILURE           0xF1  // UART/I2C/SPI error due to signal loss or corruption
 
 
+//HAL UART TRANSMIT Macro definition
+
+#define LOG(x,y) HAL_UART_Transmit(&huart4,x,y,500)
